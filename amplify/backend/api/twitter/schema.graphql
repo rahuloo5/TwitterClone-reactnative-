@@ -1,0 +1,31 @@
+type User @model {
+  id: ID!
+  username: String!
+  image:String
+  name: String!
+  email : String!
+  tweets: [Tweet] @connection(keyName: "byUser", fields: ["id"])
+}
+
+type Tweet @model @key(name: "byUser", fields: ["userID"]) {
+  id: ID!
+  content: String!
+  userID: ID!
+  image:String
+  user: User @connection(fields: ["userID"])
+  likes : [like] @connection(keyName:"byUser" , fields:["id"])
+  
+}
+
+type like @model(queries:null)
+@key(name:"byUser" , fields:["userID" , "tweetID"])
+@key(name:"byTweet", fields:["userID" , "tweetID"]){
+
+id:ID!
+userID:ID!
+tweetID:ID!
+user:User! @connection(fields:["userID"])
+tweet:Tweet! @connection(fields:["tweetID"])
+}
+
+
